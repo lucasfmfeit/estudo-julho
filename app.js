@@ -1,3 +1,5 @@
+let id = null
+
 async function getData() {
     const response = await fetch("http://localhost:3000/usuarios")
     const data = await response.json()
@@ -49,8 +51,16 @@ function formatDate(data) {
     return finalDate
 }
 
-async function sendData(event){
+function handleSend(event){
     event.preventDefault()
+    if(id){
+        editData()
+    }else{
+        sendData()
+    }
+}
+
+async function sendData(){
     const email = document.getElementById("email")
     const nome = document.getElementById("nome")
     const data = document.getElementById("data")
@@ -85,6 +95,7 @@ async function deleteData(id){
 }
 
 function handleEdit(data){
+    id=data.id
     const email = document.getElementById("email")
     const nome = document.getElementById("nome")
     const dataNascimento = document.getElementById("data")
@@ -94,11 +105,28 @@ function handleEdit(data){
 
 }
 
-async function editData(id){
+async function editData(){
+    const email = document.getElementById("email")
+    const nome = document.getElementById("nome")
+    const data = document.getElementById("data")
+    const body = {
+        nome:nome.value, 
+        email:email.value,
+        dataNascimento:data.value
+    }
     const response = await fetch(`http://localhost:3000/usuarios/${id}`,{
-        method: "PUT"
+        method: "PUT",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify(body)
     })
     if(response.status===200){
+        nome.value = ""
+        email.value = ""
+        data.value = ""
+        id=null
         getData()
     }
 }
