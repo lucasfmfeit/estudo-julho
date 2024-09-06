@@ -1,7 +1,9 @@
 let id = null
 
+const apiUrl = "https://apilite.onrender.com"
+
 async function getData() {
-    const response = await fetch("http://localhost:3000/usuarios")
+    const response = await fetch(`${apiUrl}/usuarios`)
     const data = await response.json()
     showData(data)
 }
@@ -69,7 +71,7 @@ async function sendData(){
         email:email.value,
         dataNascimento:data.value
     }
-    const response = await fetch("http://localhost:3000/usuarios",{
+    const response = await fetch(`${apiUrl}/usuarios`,{
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -86,7 +88,7 @@ async function sendData(){
     } 
 }
 async function deleteData(id){
-    const response = await fetch(`http://localhost:3000/usuarios/${id}`,{
+    const response = await fetch(`${apiUrl}/usuarios/${id}`,{
         method: "DELETE"
     })
     if(response.status===200){
@@ -114,7 +116,7 @@ async function editData(){
         email:email.value,
         dataNascimento:data.value
     }
-    const response = await fetch(`http://localhost:3000/usuarios/${id}`,{
+    const response = await fetch(`${apiUrl}/usuarios/${id}`,{
         method: "PUT",
         headers: {
             'Accept': 'application/json',
